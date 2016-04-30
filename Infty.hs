@@ -2,21 +2,23 @@ module Infty
 ( Infty -- without constructor
 , toInfty
 , fromInfty
-, .+.
+, (.+.)
 , negateInfty
-, .-.
-, .*.
+, (.-.)
+, (.*.)
 , recipInfty
-, ./.
+, (./.)
 ) where
 
 data Infty = Infty {real :: Float, inftyness :: Int} deriving (Show)
 
-toInfty :: Num -> Infty
+toInfty :: Float -> Infty
 toInfty 0 = Infty 1 (-1) -- invent some information
 toInfty x = Infty x 0
+-- Can't properly handle 0, NaN, Inf, or -Inf
+-- Handle 0 by pretending it's a "single" zero.
 
-fromInfty :: Infty -> Num
+fromInfty :: Infty -> Float
 fromInfty x = case compare (inftyness x) 0 of
     LT -> 0 -- lose some information.  Yay symmetry!
     EQ -> real x
