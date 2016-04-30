@@ -13,12 +13,12 @@ module Infty
 data Infty = Infty {real :: Float, inftyness :: Int} deriving (Show)
 
 toInfty :: Num -> Infty
-toInfty 0 = Infty 1 (-1)
+toInfty 0 = Infty 1 (-1) -- invent some information
 toInfty x = Infty x 0
 
 fromInfty :: Infty -> Num
 fromInfty x = case compare (inftyness x) 0 of
-    LT -> 0
+    LT -> 0 -- lose some information.  Yay symmetry!
     EQ -> real x
     GT -> 1/0
 
@@ -28,7 +28,7 @@ x .+. y =
         LT -> y
         EQ -> let a_sum = (real x + real y)
               in  if a_sum == 0
-                  then Infty 1 (-1)
+                  then Infty 1 (inftyness y - 1)
                   else Infty a_sum (inftyness y)
         GT -> x
 
